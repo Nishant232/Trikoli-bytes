@@ -1,13 +1,15 @@
 import { Plus, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import type { MenuItem } from "@/data/menuData";
 
 const MenuCard = ({ item }: { item: MenuItem }) => {
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   return (
     <div className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-[var(--shadow-card-hover)] transition-all duration-300 shadow-[var(--shadow-card)]">
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden cursor-pointer" onClick={() => navigate(`/product/${item.id}`)}>
         <img
           src={item.image}
           alt={item.name}
@@ -27,7 +29,9 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between mb-1">
-          <h3 className="font-heading font-semibold text-card-foreground">{item.name}</h3>
+          <h3 className="font-heading font-semibold text-card-foreground cursor-pointer hover:text-primary transition-colors" onClick={() => navigate(`/product/${item.id}`)}>
+            {item.name}
+          </h3>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Star className="h-3.5 w-3.5 fill-primary text-primary" />
             {item.rating}

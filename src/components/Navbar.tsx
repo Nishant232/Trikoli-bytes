@@ -1,31 +1,42 @@
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X, User, LogOut, Package } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { totalItems, setIsOpen } = useCart();
+  const { user, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2">
+        <button onClick={() => navigate("/")} className="flex items-center gap-2">
           <span className="text-2xl">🔥</span>
           <span className="font-heading text-xl font-bold text-foreground">
             Triloki <span className="text-primary">Bytes</span>
           </span>
-        </a>
+        </button>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#menu" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Menu</a>
-          <a href="#offers" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Offers</a>
-          <a href="#about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">About</a>
-          <a href="#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</a>
+          <a href="/#menu" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Menu</a>
+          <a href="/#offers" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Offers</a>
+          <a href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</a>
+          {user && (
+            <button onClick={() => navigate("/orders")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">My Orders</button>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={() => navigate("/cart")}
             className="relative p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors"
           >
             <ShoppingCart className="h-5 w-5 text-primary" />
@@ -35,6 +46,22 @@ const Navbar = () => {
               </span>
             )}
           </button>
+
+          {user ? (
+            <div className="hidden md:flex items-center gap-2">
+              <button onClick={() => navigate("/orders")} className="p-2 rounded-full hover:bg-muted transition-colors" title="My Orders">
+                <Package className="h-5 w-5 text-muted-foreground" />
+              </button>
+              <button onClick={handleSignOut} className="p-2 rounded-full hover:bg-muted transition-colors" title="Sign Out">
+                <LogOut className="h-5 w-5 text-muted-foreground" />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => navigate("/auth")} className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:brightness-110 transition-all">
+              <User className="h-4 w-4" /> Sign In
+            </button>
+          )}
+
           <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -44,10 +71,17 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border bg-card animate-fade-in">
           <div className="flex flex-col p-4 gap-3">
-            <a href="#menu" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Menu</a>
-            <a href="#offers" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Offers</a>
-            <a href="#about" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>About</a>
-            <a href="#contact" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            <a href="/#menu" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Menu</a>
+            <a href="/#offers" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Offers</a>
+            <a href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            {user ? (
+              <>
+                <button onClick={() => { navigate("/orders"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">My Orders</button>
+                <button onClick={() => { handleSignOut(); setMobileMenuOpen(false); }} className="text-sm font-medium text-destructive text-left">Sign Out</button>
+              </>
+            ) : (
+              <button onClick={() => { navigate("/auth"); setMobileMenuOpen(false); }} className="text-sm font-medium text-primary text-left">Sign In</button>
+            )}
           </div>
         </div>
       )}

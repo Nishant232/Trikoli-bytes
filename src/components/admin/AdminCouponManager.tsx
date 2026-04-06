@@ -147,9 +147,14 @@ const AdminCouponManager = ({ userRole }: { userRole: "super_admin" | "admin" })
                 <Button variant="outline" size="sm" onClick={() => toggleActive(coupon.id, coupon.is_active)}>
                   {coupon.is_active ? "Deactivate" : "Activate"}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(coupon.id)}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
+                <Button variant="ghost" size="icon" onClick={() => handleSoftDelete(coupon.id)} title="Archive">
+                  <Trash2 className="h-4 w-4 text-muted-foreground" />
                 </Button>
+                {userRole === "super_admin" && (
+                  <Button variant="ghost" size="icon" onClick={() => handleHardDelete(coupon.id)} title="Permanently delete">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                )}
               </div>
             </div>
           ))}

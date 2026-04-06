@@ -46,7 +46,7 @@ const emptyForm = {
 
 const categories = ["Main Course", "Starters", "Breads", "Desserts", "Beverages"];
 
-const AdminMenuManager = () => {
+const AdminMenuManager = ({ userRole }: { userRole: "super_admin" | "admin" }) => {
   const [items, setItems] = useState<MenuItemRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -146,13 +146,34 @@ const AdminMenuManager = () => {
     fetchItems();
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this menu item?")) return;
+  const handleSoftDelete = async (id: string) => {
+    if (!confirm("Archive this menu item? It will be hidden from customers.")) return;
+    const { error } = await supabase.from("menu_items").update({ deleted_at: new Date().toISOString() }).eq("id", id);
+    if (error) {
+      toast({ title: "Archive failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Item archived" });
+      fetchItems();
+    }
+  };
+
+  const handleHardDelete = async (id: string) => {
+    if (!confirm("⚠️ PERMANENTLY delete this item? This cannot be undone.")) return;
     const { error } = await supabase.from("menu_items").delete().eq("id", id);
     if (error) {
       toast({ title: "Delete failed", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Deleted" });
+      toast({ title: "Permanently deleted" });
+      fetchItems();
+    }
+  };
+
+  const handleRestore = async (id: string) => {
+    const { error } = await supabase.from("menu_items").update({ deleted_at: null }).eq("id", id);
+    if (error) {
+      toast({ title: "Restore failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Item restored ✅" });
       fetchItems();
     }
   };

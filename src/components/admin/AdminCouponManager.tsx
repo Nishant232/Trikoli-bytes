@@ -32,7 +32,7 @@ const emptyForm = {
   expires_at: "",
 };
 
-const AdminCouponManager = () => {
+const AdminCouponManager = ({ userRole }: { userRole: "super_admin" | "admin" }) => {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -87,13 +87,24 @@ const AdminCouponManager = () => {
     if (!error) fetchCoupons();
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this coupon?")) return;
+  const handleSoftDelete = async (id: string) => {
+    if (!confirm("Archive this coupon?")) return;
+    const { error } = await supabase.from("coupons").update({ deleted_at: new Date().toISOString(), is_active: false } as any).eq("id", id);
+    if (error) {
+      toast({ title: "Archive failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Coupon archived" });
+      fetchCoupons();
+    }
+  };
+
+  const handleHardDelete = async (id: string) => {
+    if (!confirm("⚠️ PERMANENTLY delete this coupon?")) return;
     const { error } = await supabase.from("coupons").delete().eq("id", id);
     if (error) {
       toast({ title: "Delete failed", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Coupon deleted" });
+      toast({ title: "Permanently deleted" });
       fetchCoupons();
     }
   };

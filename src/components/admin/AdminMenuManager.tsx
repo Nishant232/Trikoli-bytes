@@ -216,9 +216,14 @@ const AdminMenuManager = ({ userRole }: { userRole: "super_admin" | "admin" }) =
                 <Button variant="ghost" size="icon" onClick={() => openEdit(item)}>
                   <Pencil className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
+                <Button variant="ghost" size="icon" onClick={() => handleSoftDelete(item.id)} title="Archive">
+                  <Trash2 className="h-4 w-4 text-muted-foreground" />
                 </Button>
+                {userRole === "super_admin" && (
+                  <Button variant="ghost" size="icon" onClick={() => handleHardDelete(item.id)} title="Permanently delete">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                )}
               </div>
             </div>
           ))}

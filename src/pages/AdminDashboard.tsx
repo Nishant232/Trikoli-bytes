@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     );
   }
 
-  if (!isAdmin) return null;
+  if (!userRole) return null;
 
   const handleLogout = async () => {
     await signOut();

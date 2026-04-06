@@ -37,10 +37,12 @@ const AdminLogin = () => {
     const { data: roles } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin");
+      .eq("user_id", user.id);
 
-    if (!roles || roles.length === 0) {
+    const validRoles = (roles || []).map((r: any) => r.role);
+    const hasAccess = validRoles.some((r: string) => ["super_admin", "admin", "staff"].includes(r));
+
+    if (!hasAccess) {
       await supabase.auth.signOut();
       toast({ title: "Access denied", description: "You don't have admin privileges.", variant: "destructive" });
       setLoading(false);

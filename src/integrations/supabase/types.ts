@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           code: string
           created_at: string | null
+          deleted_at: string | null
           discount_percent: number
           expires_at: string | null
           id: string
@@ -29,6 +30,7 @@ export type Database = {
         Insert: {
           code: string
           created_at?: string | null
+          deleted_at?: string | null
           discount_percent: number
           expires_at?: string | null
           id?: string
@@ -40,6 +42,7 @@ export type Database = {
         Update: {
           code?: string
           created_at?: string | null
+          deleted_at?: string | null
           discount_percent?: number
           expires_at?: string | null
           id?: string
@@ -54,6 +57,7 @@ export type Database = {
         Row: {
           category: string
           created_at: string
+          deleted_at: string | null
           description: string | null
           id: string
           image_url: string | null
@@ -68,6 +72,7 @@ export type Database = {
         Insert: {
           category?: string
           created_at?: string
+          deleted_at?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
@@ -82,6 +87,7 @@ export type Database = {
         Update: {
           category?: string
           created_at?: string
+          deleted_at?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
@@ -261,7 +267,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "super_admin" | "staff"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -389,7 +395,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "super_admin", "staff"],
     },
   },
 } as const

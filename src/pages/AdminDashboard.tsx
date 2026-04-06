@@ -9,10 +9,12 @@ import AdminMenuManager from "@/components/admin/AdminMenuManager";
 import AdminOrderManager from "@/components/admin/AdminOrderManager";
 import AdminCouponManager from "@/components/admin/AdminCouponManager";
 
+type UserRole = "super_admin" | "admin" | "staff";
+
 const AdminDashboard = () => {
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
@@ -25,14 +27,22 @@ const AdminDashboard = () => {
       const { data } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin");
+        .eq("user_id", user.id);
 
-      if (!data || data.length === 0) {
+      const roles = (data || []).map((r: any) => r.role as string);
+      const role = roles.includes("super_admin")
+        ? "super_admin"
+        : roles.includes("admin")
+        ? "admin"
+        : roles.includes("staff")
+        ? "staff"
+        : null;
+
+      if (!role) {
         navigate("/admin/login");
         return;
       }
-      setIsAdmin(true);
+      setUserRole(role);
       setChecking(false);
     };
     checkAdmin();

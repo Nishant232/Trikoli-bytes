@@ -58,7 +58,7 @@ const AdminCouponManager = () => {
     }
     setSaving(true);
 
-    const payload: Record<string, unknown> = {
+    const payload = {
       code: form.code.toUpperCase().trim(),
       discount_percent: parseInt(form.discount_percent),
       min_order_amount: form.min_order_amount ? parseInt(form.min_order_amount) : 0,

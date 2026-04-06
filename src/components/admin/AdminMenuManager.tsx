@@ -114,7 +114,7 @@ const AdminMenuManager = () => {
       if (url) image_url = url;
     }
 
-    const payload: Record<string, unknown> = {
+    const payload = {
       name: form.name.trim(),
       description: form.description.trim() || null,
       price: parseInt(form.price),
@@ -122,8 +122,8 @@ const AdminMenuManager = () => {
       is_veg: form.is_veg,
       is_popular: form.is_popular,
       is_available: form.is_available,
+      ...(image_url ? { image_url } : {}),
     };
-    if (image_url) payload.image_url = image_url;
 
     if (editingId) {
       const { error } = await supabase.from("menu_items").update(payload).eq("id", editingId);

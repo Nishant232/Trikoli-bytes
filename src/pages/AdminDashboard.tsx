@@ -4,11 +4,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, LogOut, UtensilsCrossed, ShoppingBag, Tag, Users } from "lucide-react";
+import { Shield, LogOut, UtensilsCrossed, ShoppingBag, Tag, Users, BarChart3 } from "lucide-react";
 import AdminMenuManager from "@/components/admin/AdminMenuManager";
 import AdminOrderManager from "@/components/admin/AdminOrderManager";
 import AdminCouponManager from "@/components/admin/AdminCouponManager";
 import AdminUserManager from "@/components/admin/AdminUserManager";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
 
 type UserRole = "super_admin" | "admin" | "staff";
 

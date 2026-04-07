@@ -4,11 +4,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, LogOut, UtensilsCrossed, ShoppingBag, Tag, Users } from "lucide-react";
+import { Shield, LogOut, UtensilsCrossed, ShoppingBag, Tag, Users, BarChart3 } from "lucide-react";
 import AdminMenuManager from "@/components/admin/AdminMenuManager";
 import AdminOrderManager from "@/components/admin/AdminOrderManager";
 import AdminCouponManager from "@/components/admin/AdminCouponManager";
 import AdminUserManager from "@/components/admin/AdminUserManager";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
 
 type UserRole = "super_admin" | "admin" | "staff";
 
@@ -89,8 +90,13 @@ const AdminDashboard = () => {
 
       {/* Content */}
       <div className="container mx-auto px-4 py-6">
-        <Tabs defaultValue={userRole === "staff" ? "orders" : "menu"} className="w-full">
-          <TabsList className={`grid w-full max-w-lg ${userRole === "super_admin" ? "grid-cols-4" : userRole === "staff" ? "grid-cols-1" : "grid-cols-3"}`}>
+        <Tabs defaultValue={userRole === "staff" ? "orders" : userRole === "super_admin" ? "analytics" : "menu"} className="w-full">
+          <TabsList className={`grid w-full max-w-2xl ${userRole === "super_admin" ? "grid-cols-5" : userRole === "staff" ? "grid-cols-1" : "grid-cols-3"}`}>
+            {userRole === "super_admin" && (
+              <TabsTrigger value="analytics" className="flex items-center gap-1.5">
+                <BarChart3 className="h-4 w-4" /> Analytics
+              </TabsTrigger>
+            )}
             {userRole !== "staff" && (
               <TabsTrigger value="menu" className="flex items-center gap-1.5">
                 <UtensilsCrossed className="h-4 w-4" /> Menu
@@ -111,6 +117,11 @@ const AdminDashboard = () => {
             )}
           </TabsList>
 
+          {userRole === "super_admin" && (
+            <TabsContent value="analytics" className="mt-6">
+              <AdminAnalytics />
+            </TabsContent>
+          )}
           {userRole !== "staff" && (
             <TabsContent value="menu" className="mt-6">
               <AdminMenuManager userRole={userRole!} />

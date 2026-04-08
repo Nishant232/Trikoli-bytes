@@ -199,9 +199,12 @@ const AdminOrderManager = () => {
   ) => {
     setUpdatingKey(`${field}:${orderId}`);
 
+    const updatePayload: Record<string, string> = {};
+    updatePayload[field] = value;
+
     const { error } = await supabase
       .from("orders")
-      .update({ [field]: value })
+      .update(updatePayload as any)
       .eq("id", orderId);
 
     if (error) {

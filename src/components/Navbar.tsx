@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { totalItems, setIsOpen } = useCart();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isDashboardUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -31,6 +31,9 @@ const Navbar = () => {
           <a href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</a>
           {user && (
             <button onClick={() => navigate("/orders")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">My Orders</button>
+          )}
+          {isDashboardUser && (
+            <button onClick={() => navigate("/admin")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Dashboard</button>
           )}
         </div>
 
@@ -77,6 +80,9 @@ const Navbar = () => {
             {user ? (
               <>
                 <button onClick={() => { navigate("/orders"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">My Orders</button>
+                {isDashboardUser && (
+                  <button onClick={() => { navigate("/admin"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">Dashboard</button>
+                )}
                 <button onClick={() => { handleSignOut(); setMobileMenuOpen(false); }} className="text-sm font-medium text-destructive text-left">Sign Out</button>
               </>
             ) : (

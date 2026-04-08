@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+
+const CART_STORAGE_KEY = "triloki_cart";
 
 export interface CartItem {
   id: string;
@@ -25,12 +27,34 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  useEffect(() => {
+    const savedCart = window.localStorage.getItem(CART_STORAGE_KEY);
+
+    if (savedCart) {
+      try {
+        setItems(JSON.parse(savedCart) as CartItem[]);
+      } catch {
+        window.localStorage.removeItem(CART_STORAGE_KEY);
+      }
+    }
+
+    setHasLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }, [hasLoaded, items]);
 
   const addItem = (item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+      const existing = prev.find((entry) => entry.id === item.id);
       if (existing) {
-        return prev.map((i) => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
+        return prev.map((entry) =>
+          entry.id === item.id ? { ...entry, quantity: entry.quantity + 1 } : entry,
+        );
       }
       return [...prev, { ...item, quantity: 1 }];
     });
@@ -38,7 +62,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+    setItems((prev) => prev.filter((entry) => entry.id !== id));
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -46,16 +70,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       removeItem(id);
       return;
     }
-    setItems((prev) => prev.map((i) => i.id === id ? { ...i, quantity } : i));
+
+    setItems((prev) =>
+      prev.map((entry) => (entry.id === id ? { ...entry, quantity } : entry)),
+    );
   };
 
-  const clearCart = () => setItems([]);
+  const clearCart = () => {
+    setItems([]);
+    window.localStorage.removeItem(CART_STORAGE_KEY);
+  };
 
-  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalPrice = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const totalItems = items.reduce((sum, entry) => sum + entry.quantity, 0);
+  const totalPrice = items.reduce((sum, entry) => sum + entry.price * entry.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice, isOpen, setIsOpen }}>
+    <CartContext.Provider
+      value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice, isOpen, setIsOpen }}
+    >
       {children}
     </CartContext.Provider>
   );

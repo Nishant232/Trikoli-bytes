@@ -225,7 +225,7 @@ const AdminAnalytics = () => {
     const csv = rows
       .map((row) =>
         row
-          .map((cell = "") => `"${String(cell).replaceAll('"', '""')}"`)
+          .map((cell = "") => `"${String(cell).replace(/"/g, '""')}"`)
           .join(","),
       )
       .join("\n");

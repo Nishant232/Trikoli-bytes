@@ -288,36 +288,25 @@ export type Database = {
     }
     Functions: {
       admin_list_order_customers: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          email: string | null
-          full_name: string | null
+          email: string
+          full_name: string
           user_id: string
         }[]
       }
       admin_list_users_with_roles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          email: string | null
-          full_name: string | null
+          email: string
+          full_name: string
           roles: string[]
           user_id: string
         }[]
       }
-      bootstrap_first_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      cancel_own_order: {
-        Args: {
-          p_order_id: string
-        }
-        Returns: boolean
-      }
-      can_bootstrap_first_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      bootstrap_first_super_admin: { Args: never; Returns: boolean }
+      can_bootstrap_first_super_admin: { Args: never; Returns: boolean }
+      cancel_own_order: { Args: { p_order_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -327,10 +316,10 @@ export type Database = {
       }
       place_order: {
         Args: {
-          p_coupon_code?: string | null
+          p_coupon_code?: string
           p_delivery_address: string
-          p_items?: Json | null
-          p_payment_method?: string | null
+          p_items?: Json
+          p_payment_method: string
           p_phone: string
         }
         Returns: string

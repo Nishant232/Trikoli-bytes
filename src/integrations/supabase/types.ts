@@ -139,6 +139,35 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          changed_at: string
+          id: string
+          order_id: string
+          status: string
+        }
+        Insert: {
+          changed_at?: string
+          id?: string
+          order_id: string
+          status: string
+        }
+        Update: {
+          changed_at?: string
+          id?: string
+          order_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           coupon_code: string | null
@@ -275,12 +304,25 @@ export type Database = {
           user_id: string
         }[]
       }
+      bootstrap_first_super_admin: { Args: never; Returns: boolean }
+      can_bootstrap_first_super_admin: { Args: never; Returns: boolean }
+      cancel_own_order: { Args: { p_order_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      place_order: {
+        Args: {
+          p_coupon_code?: string
+          p_delivery_address: string
+          p_items?: Json
+          p_payment_method: string
+          p_phone: string
+        }
+        Returns: string
       }
     }
     Enums: {

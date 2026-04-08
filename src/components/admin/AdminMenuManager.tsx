@@ -408,9 +408,11 @@ const AdminMenuManager = ({ userRole }: { userRole: "super_admin" | "admin" }) =
           {visibleItems.map((item) => (
             <div key={item.id} className="flex flex-col gap-4 rounded-xl border border-border bg-card p-4 lg:flex-row lg:items-center">
               {item.image_url ? (
-                <img src={item.image_url} alt={item.name} className="h-20 w-full rounded-lg object-cover lg:h-16 lg:w-16" />
+                <div className="aspect-[4/3] w-full overflow-hidden rounded-lg lg:aspect-square lg:h-16 lg:w-16">
+                  <img src={item.image_url} alt={item.name} className="h-full w-full object-cover" />
+                </div>
               ) : (
-                <div className="flex h-20 w-full items-center justify-center rounded-lg bg-muted lg:h-16 lg:w-16">
+                <div className="flex aspect-[4/3] w-full items-center justify-center rounded-lg bg-muted lg:aspect-square lg:h-16 lg:w-16">
                   <ImageIcon className="h-6 w-6 text-muted-foreground" />
                 </div>
               )}
@@ -505,7 +507,9 @@ const AdminMenuManager = ({ userRole }: { userRole: "super_admin" | "admin" }) =
               <Input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={(e) => handleImageChange(e.target.files?.[0] || null)} className="mt-1" />
               <p className="mt-1 text-xs text-muted-foreground">Accepted: JPG, PNG, WEBP up to 2 MB.</p>
               {imagePreview && (
-                <img src={imagePreview} alt="Preview" className="mt-3 h-32 w-full rounded-lg object-cover" />
+                <div className="mt-3 aspect-[4/3] w-full overflow-hidden rounded-lg border border-border">
+                  <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
+                </div>
               )}
             </div>
 

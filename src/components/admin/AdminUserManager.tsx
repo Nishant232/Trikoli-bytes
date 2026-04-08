@@ -258,7 +258,10 @@ const AdminUserManager = () => {
                   ) : (
                     assignableUsers.map((user) => (
                       <SelectItem key={user.user_id} value={user.user_id}>
-                        {user.full_name || user.email || user.user_id}
+                        <span className="flex flex-col">
+                          <span>{user.full_name || "Unnamed User"}</span>
+                          <span className="text-xs text-muted-foreground">{user.email || user.user_id}</span>
+                        </span>
                       </SelectItem>
                     ))
                   )}

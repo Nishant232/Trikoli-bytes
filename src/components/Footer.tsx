@@ -1,11 +1,11 @@
+import logoDark from "@/assets/logo-dark.png";
+
 const Footer = () => (
   <footer id="contact" className="bg-foreground text-primary-foreground/80 py-12">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h3 className="font-heading text-xl font-bold text-primary-foreground mb-3">
-            🔥 Triloki <span className="text-primary">Bytes</span>
-          </h3>
+          <img src={logoDark} alt="Triloki Bytes" className="h-12 w-auto mb-3" />
           <p className="text-sm leading-relaxed">
             A modern cloud kitchen bringing you authentic flavours with the convenience of online ordering. Fresh, fast, and flavorful.
           </p>

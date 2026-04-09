@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, ArrowLeft, MailCheck, KeyRound } from "lucide-react";
+import logoLight from "@/assets/logo-light.png";
 
 type AuthMode = "login" | "signup" | "reset" | "recovery";
 
@@ -196,7 +197,7 @@ const Auth = () => {
 
         <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
           <div className="mb-6 text-center">
-            <span className="text-3xl">{mode === "recovery" ? "Key Access" : "Account"}</span>
+            <img src={logoLight} alt="Triloki Bytes" className="mx-auto h-14 w-auto mb-3" />
             <h1 className="mt-2 font-heading text-2xl font-bold text-card-foreground">{title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
           </div>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, MapPin, Package, XCircle } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Package, XCircle, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -107,6 +107,27 @@ const Orders = () => {
   };
 
   const canCancelOrder = (status: string) => ["pending", "confirmed"].includes(status);
+  const canDeleteOrder = (status: string) => status === "delivered";
+
+  const deleteOrder = async (orderId: string) => {
+    const confirmed = confirm("Remove this delivered order from your list?");
+    if (!confirmed) return;
+
+    setCancellingId(orderId);
+    const { error: delError } = await supabase
+      .from("order_items")
+      .delete()
+      .eq("order_id", orderId);
+
+    if (!delError) {
+      await supabase.from("orders").delete().eq("id", orderId);
+      toast({ title: "Order removed" });
+      fetchOrders();
+    } else {
+      toast({ title: "Unable to remove order", description: delError.message, variant: "destructive" });
+    }
+    setCancellingId(null);
+  };
 
   const emptyState = useMemo(
     () => (
@@ -174,6 +195,18 @@ const Orders = () => {
                           disabled={cancellingId === order.id}
                         >
                           {cancellingId === order.id ? "Cancelling..." : "Cancel Order"}
+                        </Button>
+                      )}
+                      {canDeleteOrder(order.status) && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => deleteOrder(order.id)}
+                          disabled={cancellingId === order.id}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          {cancellingId === order.id ? "Removing..." : "Delete"}
                         </Button>
                       )}
                     </div>

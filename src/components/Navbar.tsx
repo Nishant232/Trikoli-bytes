@@ -1,4 +1,4 @@
-import { ShoppingCart, Menu, X, User, LogOut, Package } from "lucide-react";
+import { ShoppingCart, Menu, X, User, LogOut, Package, UserCircle } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
@@ -27,8 +27,8 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           <a href="/#menu" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Menu</a>
-          <a href="/#offers" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Offers</a>
-          <a href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</a>
+          <button onClick={() => navigate("/offers")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Offers</button>
+          <button onClick={() => navigate("/about")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">About</button>
           {user && (
             <button onClick={() => navigate("/orders")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">My Orders</button>
           )}
@@ -52,6 +52,9 @@ const Navbar = () => {
 
           {user ? (
             <div className="hidden md:flex items-center gap-2">
+              <button onClick={() => navigate("/profile")} className="p-2 rounded-full hover:bg-muted transition-colors" title="Profile">
+                <UserCircle className="h-5 w-5 text-muted-foreground" />
+              </button>
               <button onClick={() => navigate("/orders")} className="p-2 rounded-full hover:bg-muted transition-colors" title="My Orders">
                 <Package className="h-5 w-5 text-muted-foreground" />
               </button>
@@ -75,10 +78,11 @@ const Navbar = () => {
         <div className="md:hidden border-t border-border bg-card animate-fade-in">
           <div className="flex flex-col p-4 gap-3">
             <a href="/#menu" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Menu</a>
-            <a href="/#offers" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Offers</a>
-            <a href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            <button onClick={() => { navigate("/offers"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">Offers</button>
+            <button onClick={() => { navigate("/about"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">About</button>
             {user ? (
               <>
+                <button onClick={() => { navigate("/profile"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">My Profile</button>
                 <button onClick={() => { navigate("/orders"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">My Orders</button>
                 {isDashboardUser && (
                   <button onClick={() => { navigate("/admin"); setMobileMenuOpen(false); }} className="text-sm font-medium text-muted-foreground hover:text-primary text-left">Dashboard</button>

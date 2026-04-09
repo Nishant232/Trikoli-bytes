@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Shield, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import logoLight from "@/assets/logo-light.png";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -131,9 +132,7 @@ const AdminLogin = () => {
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
           <div className="mb-6 text-center">
-            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <Shield className="h-7 w-7 text-primary" />
-            </div>
+            <img src={logoLight} alt="Triloki Bytes" className="mx-auto h-14 w-auto mb-3" />
             <h1 className="font-heading text-2xl font-bold text-card-foreground">Operations Login</h1>
             <p className="mt-1 text-sm text-muted-foreground">
               For super admin, managers, and staff

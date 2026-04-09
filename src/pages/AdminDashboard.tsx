@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, LogOut, UtensilsCrossed, ShoppingBag, Tag, Users, BarChart3 } from "lucide-react";
+import { LogOut, UtensilsCrossed, ShoppingBag, Tag, Users, BarChart3 } from "lucide-react";
+import logoLight from "@/assets/logo-light.png";
 import AdminMenuManager from "@/components/admin/AdminMenuManager";
 import AdminOrderManager from "@/components/admin/AdminOrderManager";
 import AdminCouponManager from "@/components/admin/AdminCouponManager";
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
       <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
-            <Shield className="h-6 w-6 text-primary" />
+            <img src={logoLight} alt="Triloki Bytes" className="h-9 w-auto" />
             <div>
               <h1 className="font-heading text-lg font-bold text-card-foreground">
                 Triloki Bytes Operations Dashboard

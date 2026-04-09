@@ -3,6 +3,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logoLight from "@/assets/logo-light.png";
 
 const Navbar = () => {
   const { totalItems, setIsOpen } = useCart();
@@ -19,10 +20,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <button onClick={() => navigate("/")} className="flex items-center gap-2">
-          <span className="text-2xl">🔥</span>
-          <span className="font-heading text-xl font-bold text-foreground">
-            Triloki <span className="text-primary">Bytes</span>
-          </span>
+          <img src={logoLight} alt="Triloki Bytes" className="h-10 w-auto" />
         </button>
 
         <div className="hidden md:flex items-center gap-8">
